@@ -1,12 +1,14 @@
 # mill-scala3-library-starter.g8
 
-A Giter8 template for a Sharaf fullstack web app.  
+Giter8 template for a Sharaf fullstack web app.  
+
 This template creates a simple blog web app with:
 - simple, layered architecture, with [ArchUnit](https://www.archunit.org/) tests
-- [squery](https://sake92.github.io/squery/) for database access
+- [squery](https://sake92.github.io/squery/) for database access, using [Testcontainers](https://java.testcontainers.org/) for tests
 - integration test written with [Playwright](https://playwright.dev/java/)
-- simple `Dockerfile`
+- simple `Dockerfile` for deployment
 - `docker-compose.yml` for local dev
+- CI with GitHub Actions
 
 
 ## Quickstart
