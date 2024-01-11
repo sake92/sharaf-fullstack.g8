@@ -1,0 +1,9 @@
+
+.idea/
+.bloop/
+.metals/
+.bsp/
+.vscode/
+
+out/
+

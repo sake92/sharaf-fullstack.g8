@@ -1,0 +1,28 @@
+
+version: "3"
+
+services:
+
+  blog:
+    depends_on:
+      - postgres
+    image: blog-local-dev
+    build: .
+    ports:
+      - "9011:9011"
+    environment:
+      - CONFIG_FORCE_port=${PORT}
+      - CONFIG_FORCE_baseUrl=${BASE_URL}
+      - CONFIG_FORCE_db_jdbcUrl=${DB_JDBC_URL}
+      - CONFIG_FORCE_db_username=${DB_USERNAME}
+      - CONFIG_FORCE_db_password=${DB_PASSWORD}
+
+  postgres:
+    image: postgres:14
+    ports:
+      - "9010:5432"
+    environment:
+      - POSTGRES_USER=blog_admin
+      - POSTGRES_PASSWORD=blog_admin
+      - POSTGRES_DB=blog
+  

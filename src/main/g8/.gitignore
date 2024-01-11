@@ -1,0 +1,11 @@
+
+.idea/
+.bloop/
+.metals/
+.bsp/
+.vscode/
+
+out/
+
+hepek_output/
+
