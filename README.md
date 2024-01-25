@@ -1,4 +1,4 @@
-# mill-scala3-library-starter.g8
+# sharaf-fullstack.g8
 
 Giter8 template for a Sharaf fullstack web app.  
 
