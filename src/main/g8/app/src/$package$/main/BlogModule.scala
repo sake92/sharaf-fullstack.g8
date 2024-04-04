@@ -6,7 +6,7 @@ import org.flywaydb.core.Flyway
 import ba.sake.squery.SqueryContext
 import ba.sake.sharaf.*
 import ba.sake.sharaf.routing.*
-import ba.sake.sharaf.handlers.ErrorMapper
+import ba.sake.sharaf.exceptions.ExceptionMapper
 import $package$.db.daos.*
 import $package$.domain.services.*
 import $package$.web.controllers.*
@@ -29,11 +29,11 @@ object BlogModule {
     val flyway = Flyway.configure().dataSource(ds).schemas("blog").load()
 
     val squeryContext = SqueryContext(ds)
-    val postDao = PostDao(squeryContext)
-    val tagDao = TagDao(squeryContext)
+    val postDao = PostDao()
+    val tagDao = TagDao()
 
-    val postService = PostService(postDao)
-    val tagService = TagService(tagDao)
+    val postService = PostService(squeryContext, postDao)
+    val tagService = TagService(squeryContext, tagDao)
 
     val controllers = Seq(
       HomeController(tagService),
@@ -41,7 +41,7 @@ object BlogModule {
     )
     val routes = Routes.merge(controllers.map(_.routes))
 
-    val customErrorMapper: ErrorMapper = { case e: RuntimeException =>
+    val customExceptionMapper: ExceptionMapper = { case e: RuntimeException =>
       val errorPage = ErrorPage(e.getMessage())
       Response
         .withBody(errorPage)
@@ -49,7 +49,7 @@ object BlogModule {
     }
 
     val httpHandler = SharafHandler(routes)
-      .withErrorMapper(customErrorMapper.orElse(ErrorMapper.default))
+      .withExceptionMapper(customExceptionMapper.orElse(ExceptionMapper.default))
       .withNotFoundHandler { _ =>
         Response
           .withBody(NotFoundPage)

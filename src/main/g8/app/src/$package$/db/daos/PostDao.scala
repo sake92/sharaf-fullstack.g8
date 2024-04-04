@@ -7,25 +7,23 @@ import ba.sake.squery.utils.*
 import $package$.db.models.*
 import $package$.common.PageRequest
 
-class PostDao(ctx: SqueryContext) {
+class PostDao() {
 
-  def insert(p: PostRow) = ctx.run {
+  def insert(p: PostRow): DbAction[Unit] =
     sql"""
       INSERT INTO blog.post(id, title, md_content)
       VALUES (\${p.id}, \${p.title}, \${p.md_content})
     """.insert()
-  }
 
-  def update(p: PostRow) = ctx.run {
+  def update(p: PostRow): DbAction[Unit] =
     sql"""
       UPDATE blog.post
       SET title = \${p.title},
           md_content = \${p.md_content}
       WHERE id = \${p.id}
     """.update()
-  }
 
-  def findById(id: UUID): Seq[PostTagRow] = ctx.run {
+  def findById(id: UUID): DbAction[Seq[PostTagRow]] =
     sql"""
       SELECT  p.id, p.title, p.md_content,
               t.id, t.name
@@ -34,9 +32,8 @@ class PostDao(ctx: SqueryContext) {
       LEFT JOIN blog.tag t ON t.id = pt.tag_id
       WHERE p.id = \${id}
     """.readRows()
-  }
 
-  def filter(pr: PageRequest, tag: String, q: String): PageRows[PostTagRow] = ctx.run {
+  def filter(pr: PageRequest, tag: String, q: String): DbAction[PageRows[PostTagRow]] = {
     val likeArg = s"%\${q.trim}%"
 
     val cond = Seq(

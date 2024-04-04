@@ -8,7 +8,7 @@ trait PlaywrightTest extends IntegrationTest {
 
   def withPage[T](testFun: Page => T) = {
     val fixture = itFixture()
-    val baseUrl = fixture.config.baseUrl
+    val baseUrl = fixture.module.config.baseUrl
 
     Using.resource(Playwright.create()) { playwright =>
       val browser = playwright
